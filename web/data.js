@@ -2,7 +2,7 @@
    ไฟล์นี้ไฟล์เดียว แก้ได้เองง่ายๆ แล้ว push GitHub + Redeploy
    ========================================================= */
 window.PIRIMU = {
-  github: "https://github.com/YOUR-NAME/pirimu",   // ← ใส่ลิงก์ GitHub ของคุณ
+  github: "https://github.com/wasinpirom/pirimu",   // ← ใส่ลิงก์ GitHub ของคุณ
   line: "@wasin",                                   // ← Line OA สำหรับแจ้งปัญหา
 
   // เว็บแนะนำบนหน้าแรก: เรียงตามหมวด ลิงก์แรกของแต่ละหมวดจะเด่นที่สุด
