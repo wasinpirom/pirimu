@@ -9,6 +9,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 
 public class MainActivity extends Activity {
     private WebView web;
@@ -16,6 +17,11 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // กล่องหุ้ม WebView: เว้นขอบให้แถบสถานะ แถบนำทาง และ taskbar ของแท็บเล็ต
+        FrameLayout root = new FrameLayout(this);
+        root.setBackgroundColor(Color.parseColor("#1a1026"));
+
         web = new WebView(this);
         web.setBackgroundColor(Color.parseColor("#1a1026"));
         WebSettings s = web.getSettings();
@@ -32,15 +38,22 @@ public class MainActivity extends Activity {
                 return true;
             }
         });
-        // เว้นขอบให้แถบสถานะและแถบนำทาง (Android 15+ วาดเต็มจอ)
+
+        root.addView(web, new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT));
+
         if (android.os.Build.VERSION.SDK_INT >= 30) {
-            web.setOnApplyWindowInsetsListener((v, insets) -> {
-                android.graphics.Insets b = insets.getInsets(android.view.WindowInsets.Type.systemBars());
+            root.setOnApplyWindowInsetsListener((v, insets) -> {
+                android.graphics.Insets b = insets.getInsets(
+                        android.view.WindowInsets.Type.systemBars()
+                        | android.view.WindowInsets.Type.displayCutout());
                 v.setPadding(b.left, b.top, b.right, b.bottom);
-                return insets;
+                return android.view.WindowInsets.CONSUMED;
             });
         }
-        setContentView(web);
+
+        setContentView(root);
         web.loadUrl("file:///android_asset/www/index.html");
     }
 
