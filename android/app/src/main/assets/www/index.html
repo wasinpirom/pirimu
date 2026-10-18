@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>PiriMU – มูครบจบในแอปเดียว</title>
+<style>
+:root{--bg:#1a1026;--card:#2a1a3d;--gold:#f2c94c;--gold2:#e0a82e;--txt:#f7efe0;--mut:#c9b8d8;--line:#3d2a55}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:radial-gradient(circle at 50% -10%,#3b2160 0,var(--bg) 60%) fixed;color:var(--txt);font-family:"Sarabun","Noto Sans Thai",system-ui,sans-serif;min-height:100vh;padding-bottom:84px}
+header{padding:20px 16px 8px;text-align:center}
+header h1{font-size:24px;color:var(--gold);letter-spacing:.5px}
+header p{color:var(--mut);font-size:14px;margin-top:2px}
+main{padding:8px 16px;max-width:560px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px}
+.card h2{font-size:18px;color:var(--gold);margin-bottom:10px}
+.big{font-size:20px;font-weight:700}
+.mut{color:var(--mut);font-size:14px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.chip{display:flex;align-items:center;gap:8px;background:#ffffff10;border-radius:12px;padding:8px 10px;flex:1 1 45%}
+.dot{width:26px;height:26px;border-radius:50%;border:2px solid #fff6;flex:none}
+.chip small{display:block;color:var(--mut);font-size:12px}
+.bad{border:1px dashed #ff8a8a88}
+label{display:block;font-size:14px;color:var(--mut);margin:10px 0 4px}
+input,select{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:#120a1c;color:var(--txt);font-size:16px;font-family:inherit}
+button.main{width:100%;margin-top:14px;padding:14px;border:0;border-radius:14px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#2a1a00;font-size:17px;font-weight:700;font-family:inherit}
+.score{font-size:56px;font-weight:800;color:var(--gold);text-align:center}
+.bar{height:10px;background:#ffffff15;border-radius:6px;overflow:hidden;margin:6px 0 12px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#ff7eb3,var(--gold))}
+.quote{font-size:17px;line-height:1.6;text-align:center;padding:4px 6px}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#140b20f0;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;background:none;border:0;color:var(--mut);padding:10px 0 12px;font-family:inherit;font-size:12px}
+nav button b{display:block;font-size:22px;font-weight:400}
+nav button.on{color:var(--gold)}
+.tab{display:none}.tab.on{display:block}
+a.link{display:flex;justify-content:space-between;align-items:center;padding:13px 4px;border-bottom:1px solid var(--line);color:var(--txt);text-decoration:none}
+a.link:last-child{border:0}
+a.link span{color:var(--mut);font-size:13px}
+.avatar{width:84px;height:84px;border-radius:50%;margin:0 auto 10px;display:grid;place-items:center;font-size:38px;background:linear-gradient(135deg,var(--gold),#b06ab3)}
+.center{text-align:center}
+.note{font-size:12px;color:var(--mut);text-align:center;margin:6px 0 16px}
+</style>
+</head>
+<body>
+<header><h1>✨ PiriMU</h1><p>มูครบจบในแอปเดียว</p></header>
+<main>
+
+<section class="tab on" id="t-today">
+  <div class="card">
+    <div class="mut" id="dateTxt"></div>
+    <div class="big" id="dayTxt"></div>
+    <div class="row" style="margin-top:12px" id="todayColors"></div>
+  </div>
+  <div class="card"><h2>🙏 พรประจำวัน</h2><p class="quote" id="quoteTxt"></p></div>
+  <div class="card">
+    <h2>📅 สีประจำวันนี้</h2>
+    <div class="chip"><span class="dot" id="dayDot"></span><div><span id="dayColorName"></span><small>สีประจำวันตามตำราไทย</small></div></div>
+  </div>
+</section>
+
+<section class="tab" id="t-birth">
+  <div class="card">
+    <h2>🎂 ดวงตามวันเกิด</h2>
+    <label for="bd">วันเกิดของคุณ</label>
+    <input type="date" id="bd">
+    <button class="main" id="bdBtn">ดูดวง</button>
+  </div>
+  <div id="bdOut"></div>
+</section>
+
+<section class="tab" id="t-love">
+  <div class="card">
+    <h2>💞 ดูคู่จากชื่อ</h2>
+    <label for="n1">ชื่อของคุณ</label><input id="n1" placeholder="เช่น สมชาย">
+    <label for="n2">ชื่อคนที่คุณแอบชอบ / แฟน</label><input id="n2" placeholder="เช่น สมหญิง">
+    <button class="main" id="loveBtn">ดูความเข้ากัน</button>
+  </div>
+  <div id="loveOut"></div>
+</section>
+
+<section class="tab" id="t-about">
+  <div class="card center">
+    <div class="avatar">🔮</div>
+    <div class="big">ดร.วศิน ภิรมย์</div>
+    <p class="mut">ผู้สร้าง PiriMU · อาจารย์ด้านซอฟต์แวร์และ AI</p>
+  </div>
+  <div class="card">
+    <h2>ผลงานอื่นของผู้สร้าง</h2>
+    <a class="link" href="https://pirimu.com">PiriMU.com<span>เว็บสายมู →</span></a>
+    <a class="link" href="https://kway.app">KWAY.app<span>AI สร้างคอนเทนต์ภาษาไทย →</span></a>
+    <a class="link" href="https://wasinpirom.com">wasinpirom.com<span>เกี่ยวกับผู้สร้าง →</span></a>
+    <a class="link" href="https://popdeng.com">popdeng.com<span>เกมและความบันเทิง →</span></a>
+    <a class="link" href="https://line.me/R/ti/p/@wasin">LINE @wasin<span>ติดต่อ / แนะนำ →</span></a>
+  </div>
+  <div class="card">
+    <h2>เกี่ยวกับแอป</h2>
+    <p class="mut">คำทำนายทั้งหมดคำนวณในเครื่องของคุณ ไม่ส่งข้อมูลออกไปที่ใด อ้างอิงตำราสีประจำวันและเลขศาสตร์ที่นิยมในไทย จัดทำเพื่อความบันเทิงเท่านั้น</p>
+    <p class="mut" style="margin-top:8px"><a href="https://pirimu.com/privacy" style="color:var(--gold)">นโยบายความเป็นส่วนตัว</a> · เวอร์ชัน 0.1</p>
+  </div>
+</section>
+
+<p class="note">เพื่อความบันเทิง · โดย ดร.วศิน ภิรมย์</p>
+</main>
+
+<nav>
+  <button class="on" data-t="today"><b>☀️</b>วันนี้</button>
+  <button data-t="birth"><b>🎂</b>วันเกิด</button>
+  <button data-t="love"><b>💞</b>ดูคู่</button>
+  <button data-t="about"><b>🔮</b>ผู้สร้าง</button>
+</nav>
+
+<script>
+// ===== ข้อมูลตำรา (แก้ได้ที่นี่) =====
+const DAYS=["อาทิตย์","จันทร์","อังคาร","พุธ","พฤหัสบดี","ศุกร์","เสาร์"];
+const C={แดง:"#e53935",ชมพู:"#f48fb1",ส้ม:"#fb8c00",เหลือง:"#fdd835",เขียว:"#43a047",ฟ้า:"#4fc3f7",น้ำเงิน:"#1e40af",ม่วง:"#8e24aa",ขาว:"#f5f5f5",ดำ:"#212121",เทา:"#9e9e9e",ครีม:"#f3e5ab",ทอง:"#d4af37",เงิน:"#c0c0c0",น้ำตาล:"#795548",บานเย็น:"#c2185b"};
+const DAYCOLOR=["แดง","เหลือง","ชมพู","เขียว","ส้ม","ฟ้า","ม่วง"];
+// สีมงคลรายวัน: [การงาน, การเงิน, เสน่ห์, โชคลาภ, กาลกิณี]
+const LUCKY=[
+ ["ส้ม","ม่วง","เขียว","ชมพู","ฟ้า"],
+ ["เขียว","ส้ม","ม่วง","ดำ","แดง"],
+ ["ม่วง","ดำ","ส้ม","เหลือง","ขาว"],
+ ["ชมพู","เขียว","ฟ้า","ส้ม","บานเย็น"],
+ ["แดง","ฟ้า","ดำ","เขียว","ม่วง"],
+ ["ส้ม","เหลือง","ชมพู","เขียว","เทา"],
+ ["ดำ","ม่วง","ฟ้า","ส้ม","เขียว"]];
+const LABEL=["การงาน","การเงิน","เสน่ห์","โชคลาภ","ควรเลี่ยง"];
+const BIRTH=[
+ "คนเกิดวันอาทิตย์ มีความเป็นผู้นำ ใจกว้าง รักศักดิ์ศรี ทำอะไรทำจริง เหมาะกับงานที่ต้องตัดสินใจ",
+ "คนเกิดวันจันทร์ อ่อนโยน ช่างสังเกต มีเสน่ห์แบบนุ่มนวล คนรอบข้างไว้ใจ เก่งเรื่องดูแลผู้อื่น",
+ "คนเกิดวันอังคาร กล้าหาญ ตรงไปตรงมา ขยัน ไม่ยอมแพ้ง่าย เหมาะกับงานที่ต้องลงมือ",
+ "คนเกิดวันพุธ ช่างพูด ฉลาด ปรับตัวเก่ง มีหัวการค้า ติดต่อสื่อสารได้ดีเยี่ยม",
+ "คนเกิดวันพฤหัสบดี สุขุม รักการเรียนรู้ มีผู้ใหญ่อุปถัมภ์ เหมาะกับงานวิชาการและการสอน",
+ "คนเกิดวันศุกร์ มีเสน่ห์ รักความสวยงาม มีศิลปะในหัวใจ เข้ากับคนง่าย",
+ "คนเกิดวันเสาร์ อดทน หนักแน่น ทำงานหนักได้ดี ความสำเร็จมาช้าแต่มั่นคง"];
+const QUOTES=["วันนี้ทำดีหนึ่งอย่าง โชคดีจะตามมาเอง","ยิ้มก่อน ใจจะเปิด ทางก็จะเปิด","เงินทองไหลมา เมื่อใจไม่ขี้กังวล","คนที่ใช่ จะมาในจังหวะที่ใช่","เริ่มเล็กๆ วันนี้ ดีกว่ารอวันที่สมบูรณ์แบบ","ขอให้วันนี้มีแต่คนน่ารักเข้ามาในชีวิต","ความขยันคือเครื่องรางที่ศักดิ์สิทธิ์ที่สุด","ทำบุญด้วยการให้อภัย ใจจะเบาและโชคจะเข้า","โอกาสชอบคนที่เตรียมตัวพร้อม","ขอให้วันนี้ปังทั้งงาน ปังทั้งเงิน ปังทั้งใจ"];
+// เลขศาสตร์ (ตารางที่นิยม)
+const NUM={1:"กดถทภฤำุ่AIJQY",2:"ขชงบปเแู้BKR",3:"ฆตฑฒ๋CGLS",4:"คธญรษะโัิDMT",5:"ฉณฌนมหฎฮฬึEHNX",6:"จลวอใUVW",7:"ซศส๊ีืOZ",8:"ยผฝพฟ็FP",9:"ฏฐไ์"};
+const MAP={};for(const k in NUM)for(const ch of NUM[k])MAP[ch]=+k;
+const numOf=s=>[...s.toUpperCase()].reduce((a,ch)=>a+(MAP[ch]||0),0);
+
+// ===== ส่วนแสดงผล =====
+const $=id=>document.getElementById(id);
+const chip=(name,label,bad)=>`<div class="chip${bad?' bad':''}"><span class="dot" style="background:${C[name]}"></span><div>${name}<small>${label}</small></div></div>`;
+function colorsFor(d){return LUCKY[d].map((c,i)=>chip(c,LABEL[i],i===4)).join("")}
+
+function renderToday(){
+  const now=new Date(),d=now.getDay();
+  $("dateTxt").textContent=now.toLocaleDateString("th-TH",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  $("dayTxt").textContent="สีมงคลวัน"+DAYS[d];
+  $("todayColors").innerHTML=colorsFor(d);
+  $("dayDot").style.background=C[DAYCOLOR[d]];
+  $("dayColorName").textContent="สี"+DAYCOLOR[d];
+  const seed=now.getFullYear()*400+now.getMonth()*31+now.getDate();
+  $("quoteTxt").textContent=QUOTES[seed%QUOTES.length];
+}
+
+$("bdBtn").onclick=()=>{
+  const v=$("bd").value; if(!v){$("bdOut").innerHTML='<div class="card mut">กรุณาเลือกวันเกิดก่อนนะ</div>';return}
+  const [y,m,dd]=v.split("-").map(Number); const d=new Date(y,m-1,dd).getDay();
+  const n=String(y+m+dd).split("").reduce((a,b)=>a+ +b,0)%9||9;
+  $("bdOut").innerHTML=`<div class="card"><h2>เกิดวัน${DAYS[d]}</h2><p style="line-height:1.7">${BIRTH[d]}</p>
+  <div class="chip" style="margin-top:12px"><span class="dot" style="background:${C[DAYCOLOR[d]]}"></span><div>สี${DAYCOLOR[d]}<small>สีประจำวันเกิด</small></div></div></div>
+  <div class="card"><h2>สีเสริมดวงคนเกิดวัน${DAYS[d]}</h2><div class="row">${colorsFor(d)}</div></div>
+  <div class="card"><h2>เลขนำโชค</h2><div class="score">${n}</div><p class="mut center">คำนวณจากวันเดือนปีเกิด</p></div>`;
+};
+
+const LOVE=[[90,"คู่บุญ! เข้ากันได้ดีมาก คุยกันรู้เรื่อง ส่งเสริมกันทั้งงานและเงิน"],[75,"คู่ที่ดี มีเคมีเข้ากัน ถ้าใจเย็นกับกันจะยิ่งไปได้ไกล"],[60,"พอไปได้ ต้องเปิดใจคุยกันบ่อยๆ ความต่างจะกลายเป็นเสน่ห์"],[0,"ต่างกันเยอะ แต่ความรักชนะได้ทุกตำรา ถ้าทั้งคู่ตั้งใจ"]];
+$("loveBtn").onclick=()=>{
+  const a=$("n1").value.trim(),b=$("n2").value.trim();
+  if(!a||!b){$("loveOut").innerHTML='<div class="card mut">ใส่ชื่อให้ครบทั้งสองคนนะ</div>';return}
+  const [x,y]=[a,b].sort(),na=numOf(x),nb=numOf(y);
+  let h=0;for(const ch of x+"|"+y)h=(h*31+ch.charCodeAt(0))>>>0;
+  const score=50+((na+nb)*7+h)%50;
+  const parts=[["ความรัก",60+(h>>3)%40],["การสื่อสาร",55+(h>>7)%45],["การเงินร่วมกัน",50+(h>>11)%50]];
+  const msg=LOVE.find(l=>score>=l[0])[1];
+  $("loveOut").innerHTML=`<div class="card center"><p class="mut">${a} 💞 ${b}</p><div class="score">${score}%</div><p style="line-height:1.7">${msg}</p></div>
+  <div class="card">${parts.map(p=>`<div>${p[0]} <b style="float:right">${p[1]}%</b></div><div class="bar"><i style="width:${p[1]}%"></i></div>`).join("")}
+  <p class="mut">ผลรวมเลขศาสตร์ชื่อ: ${a} = ${numOf(a)}, ${b} = ${numOf(b)}</p></div>`;
+};
+
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("nav button,.tab").forEach(e=>e.classList.remove("on"));
+  b.classList.add("on");$("t-"+b.dataset.t).classList.add("on");scrollTo(0,0);
+});
+renderToday();
+</script>
+</body>
+</html>
