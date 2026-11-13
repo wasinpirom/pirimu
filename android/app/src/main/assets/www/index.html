@@ -403,7 +403,7 @@ $("loveBtn").onclick=()=>{
   const [x,y]=[a,b].sort(),na=numOf(x),nb=numOf(y);
   let h=0;for(const ch of x+"|"+y)h=(h*31+ch.charCodeAt(0))>>>0;
   const score=50+((na+nb)*7+h)%50;
-  const parts=[["ความรัก",60+(h>>3)%40],["การสื่อสาร",55+(h>>7)%45],["การเงินร่วมกัน",50+(h>>11)%50]];
+  const parts=[["ความรัก",60+(h>>>3)%40],["การสื่อสาร",55+(h>>>7)%45],["การเงินร่วมกัน",50+(h>>>11)%50]];
   const msg=LOVE.find(l=>score>=l[0])[1];
   $("loveOut").innerHTML=`<div class="card center"><p class="mut">${esc(a)} 💞 ${esc(b)}</p><div class="score">${score}%</div><p style="line-height:1.7">${msg}</p></div>
   <div class="card">${parts.map(p=>`<div>${p[0]} <b style="float:right">${p[1]}%</b></div><div class="bar"><i style="width:${p[1]}%"></i></div>`).join("")}
